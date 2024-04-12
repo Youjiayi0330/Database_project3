@@ -64,7 +64,7 @@ def parseer(sql_query):
     having = statement_to_string(having_statement)
     print("HAVING:", having)
 
-    # Match ORDER BY 语句
+    # Match ORDER BY
     order_by_statement = re.search(r'ORDER BY(.*?);', sql_query, re.DOTALL)
     order_by = statement_to_string(order_by_statement)
     print("ORDER BY:", order_by)
