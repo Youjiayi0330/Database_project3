@@ -1,0 +1,36 @@
+Use healthcare;
+CREATE TABLE Hospital (hospital_id INT, name VARCHAR(50),population INT, bed INT, county_id INT, owner_id INT, PRIMARY KEY (hospital_id),FOREIGN KEY (county_id) REFERENCES County(county_id),FOREIGN KEY (owner_id) REFERENCES Owner(owner_id));
+CREATE TABLE County (county_id int, county varchar(50),PRIMARY KEY (county_id));
+CREATE TABLE Owner (owner_id int,owner_name varchar(50),PRIMARY KEY (owner_id));
+CREATE TABLE Hospital (hospital_id INT, name VARCHAR(50),population INT, bed INT, county_id INT, owner_id INT, PRIMARY KEY (hospital_id),FOREIGN KEY (county_id) REFERENCES County(county_id),FOREIGN KEY (owner_id) REFERENCES Owner(owner_id));
+IMPORT County.csv
+IMPORT Owner.csv
+IMPORT Hospital.csv
+====================================================
+CREATE INDEX county_name_idx ON County (county);
+CREATE INDEX ho_county_id_index ON Hospital (county_id);
+
+INSERT INTO Hospital (hospital_id, name, population, bed, county_id, owner_id) VALUES (100, 'SantPaul', 200, 123, 1, 0);
+INSERT INTO County (county_id, county) VALUES (2, 'Shelbyville'), (3, 'Ogdenville'), (4, 'North Haverbrook');
+INSERT INTO Hospital (hospital_id, name, population, bed, county_id, owner_id) VALUES (100, 'SantPaul', 200, 123, 2, 0);
+
+1. SELECT COUNT(county_id) FROM County;
+2. SELECT * FROM Hospital JOIN County ON Hospital.county_id = County.county_id WHERE county = "Shelbyville";
+3. SELECT * FROM Hospital JOIN County ON Hospital.county_id = County.county_id WHERE county = "LAKE" AND bed < 100;
+4. SELECT * FROM Hospital JOIN County ON Hospital.county_id = County.county_id WHERE county = "LAKE" OR bed < 100;
+5. SELECT AVG(population), owner_id FROM Owner JOIN Hospital ON Owner.owner_id = Hospital.owner_id GROUP BY owner_id;
+6. SELECT MIN(population), name, bed FROM County JOIN Hospital ON  County.county_id= Hospital.county_id GROUP BY county_id ORDER BY bed DESC;
+7. SELECT MAX(bed), name, county, owner_id FROM County JOIN Hospital ON County.county_id = Hospital.county_id WHERE county = 'LAKE' GROUP BY owner_id HAVING AVG(population) > 0 ORDER BY name;
+8. SELECT SUM(bed), owner_name FROM Owner JOIN Hospital ON Owner.owner_id = Hospital.owner_id GROUP BY owner_id;
+9. SELECT SUM(bed), hospital_id FROM Owner JOIN Hospital ON Owner.owner_id = Hospital.owner_id GROUP BY owner_id;
+
+UPDATE Hospital SET county_id = 5 WHERE name = 'DMC';
+UPDATE Hospital SET population = 200 WHERE hospital_id = 4;
+
+DELETE FROM Owner WHERE owner_id = 1;
+DELETE FROM Hospital WHERE owner_id = 6;
+
+DROP TABLE County
+DROP TABLE Hospital
+DROP TABLE County
+DROP TABLE Owner
